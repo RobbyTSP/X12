@@ -2,7 +2,7 @@
 
 This is an experimental, trimmed-down display server project ("X12") based on the classic X11 (Xorg) codebase. 
 
-The goal of this project is to eliminate legacy subsystems and bloated X11 extension layers (such as 2D core drawing APIs, legacy colormaps, core fonts, and Xwayland) while maintaining compatibility for modern clients running via Unix sockets.
+The goal of this project is to eliminate decades of legacy bloat, obsolete APIs, and insecure subsystems, modernizing the server to act as a lightweight local-only windowing engine.
 
 ⚠️ **WARNING & DISCLAIMER:** 
 This project is **highly experimental** and a work in progress! Since it is an active experiment, **severe bugs, crashes, loader issues, and unexpected errors will definitely occur**. Use it at your own risk.
@@ -11,11 +11,37 @@ This project is **highly experimental** and a work in progress! Since it is an a
 
 This project was developed entirely by **Robby** (sole creator/developer).
 
-## Features & Changes
+## What "Garbage" Was Removed? (Legacy Cleanup)
 
-- **Legacy API Removal:** All core 2D drawing (`PolyLine`, `FillPoly`, `CopyArea`), core font (`OpenFont`), and colormap requests are routed directly to `ProcBadRequest` or safe stubs.
-- **Extreme Reduction:** GLX, Xwayland, Xnest, Xvfb, Xephyr, XVideo (Xv), screensavers, and input-testing drivers have been completely compiled out and deleted.
-- **Local Only:** Network TCP listening has been completely removed. Communication is restricted exclusively to local Unix domain sockets.
+To transform X11 into X12, we systematically stripped out and blocked the following obsolete, legacy subsystems:
+
+### 1. Legacy 2D Core Drawing APIs (Obsolete Rendering)
+All core server-side 2D drawing calls have been routed to `ProcBadRequest`. Modern clients render using client-side libraries (like Cairo, Pango, or Skia) and draw using GPU acceleration (OpenGL/Vulkan). The following drawing requests are completely blocked:
+* `PolyPoint`, `PolyLine`, `PolySegment`, `PolyRectangle`, `PolyArc`
+* `FillPoly`, `PolyFillRectangle`, `PolyFillArc`
+* `PutImage`, `GetImage`, `CopyArea`, `CopyPlane`, `ClearToBackground`
+
+### 2. Legacy Server-Side Font Rendering (Core Fonts)
+Historically, the X-server loaded and rendered raster/vector fonts. Today, fonts are rendered by client-side libraries. All server-side font operations are disabled:
+* `OpenFont`, `CloseFont`, `QueryFont`, `QueryTextExtents`
+* `ListFonts`, `ListFontsWithInfo`, `SetFontPath`, `GetFontPath`
+
+### 3. Legacy Colormaps
+Hardware colormaps (used for 8-bit / indexed color displays) are obsolete. TrueColor (24-bit/32-bit) is now standard. All old palette allocation calls are blocked:
+* `AllocColor`, `FreeColors`, `StoreColors`, etc.
+
+### 4. XVideo Extension (Xv / Video Scaling)
+obsolete hardware-overlay video scaling has been disabled. The server configuration disables Xv (`-Dxv=false`), and we have commented out the `xf86XVScreenInit` calls inside the `modesetting` driver to prevent runtime loading crashes.
+
+### 5. Bloated Subsystems & Nested Servers
+The following directories and modules were physically deleted or disabled in the build configuration:
+* **GLX:** Disabled (`-Dglx=false`) and the source directory deleted.
+* **Xwayland:** Completely removed (`-Dxwayland=false`) and source directory deleted.
+* **Nested X Servers:** `Xnest`, `Xvfb`, and `Xephyr` directories have been physically deleted.
+* **Input Test Driver:** `inputtest` driver disabled and deleted.
+
+### 6. Network TCP/IPv6 Connections
+To prevent remote exploits, network TCP listeners are completely disabled (`TCPCONN` and `IPv6` compiled out). The server now communicates exclusively via secure, local Unix domain sockets.
 
 ## License
 
