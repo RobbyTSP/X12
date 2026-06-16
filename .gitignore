@@ -1,0 +1,16 @@
+# Build artifacts
+xserver/build/
+test_client
+
+# Packaging, VM & QEMU helper scripts
+vmlinuz
+initramfs.cpio.gz
+x12-initramfs/
+build_initramfs.py
+run-qemu.sh
+
+# System / IDE files
+.idea/
+.vscode/
+*.swp
+*~
