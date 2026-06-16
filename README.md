@@ -7,6 +7,14 @@ The goal of this project is to eliminate decades of legacy bloat, obsolete APIs,
 ⚠️ **WARNING & DISCLAIMER:** 
 This project is **highly experimental** and a work in progress! Since it is an active experiment, **severe bugs, crashes, loader issues, and unexpected errors will definitely occur**. Use it at your own risk.
 
+## X12 Codebase Size Reduction
+
+🐾 **=== X12 REVIER-ANALYSE ===**
+* **C-Dateien (.c):** 1035 von ehemals ~1.850
+* **H-Dateien (.h):** 631 von ehemals ~1.420
+* **Reine C-Codezeilen:** 358982 Zeilen
+* **Reine H-Codezeilen:** 116394 Zeilen
+
 ## Author & Credits
 
 This project was developed entirely by **Robby** (sole creator/developer).
