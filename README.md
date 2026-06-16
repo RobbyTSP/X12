@@ -7,13 +7,13 @@ The goal of this project is to eliminate decades of legacy bloat, obsolete APIs,
 ⚠️ **WARNING & DISCLAIMER:** 
 This project is **highly experimental** and a work in progress! Since it is an active experiment, **severe bugs, crashes, loader issues, and unexpected errors will definitely occur**. Use it at your own risk.
 
-## X12 Codebase Size Reduction
+## Codebase Size & Analysis (Reduction Metrics)
 
-🐾 **=== X12 REVIER-ANALYSE ===**
-* **C-Dateien (.c):** 1035 von ehemals ~1.850
-* **H-Dateien (.h):** 631 von ehemals ~1.420
-* **Reine C-Codezeilen:** 358982 Zeilen
-* **Reine H-Codezeilen:** 116394 Zeilen
+🐾 **X12 Footprint Analysis:**
+* **Source Files (.c):** 1,035 files (reduced from ~1,850 in legacy X11)
+* **Header Files (.h):** 631 files (reduced from ~1,420 in legacy X11)
+* **C Code Volume:** 358,982 source lines of code
+* **Header Volume:** 116,394 header lines of code
 
 ## Author & Credits
 
