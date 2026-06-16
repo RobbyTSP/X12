@@ -63,7 +63,9 @@ typedef WINAPI HRESULT(*SHGETFOLDERPATHPROC) (HWND hwndOwner,
 #include "nonsdk_extinit.h"
 #include "pseudoramiX/pseudoramiX.h"
 
+#ifdef GLXEXT
 #include "glx_extinit.h"
+#endif
 #ifdef XWIN_GLX_WINDOWS
 #include "glx/glwindows.h"
 #include "dri/windowsdri.h"
@@ -1020,7 +1022,9 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char *argv[])
         }
     }
 
+#ifdef GLXEXT
     xorgGlxCreateVendor();
+#endif
 
     /* Generate a cookie used by internal clients for authorization */
     if (g_fXdmcpEnabled || g_fAuthEnabled)

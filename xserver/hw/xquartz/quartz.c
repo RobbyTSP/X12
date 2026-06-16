@@ -43,7 +43,9 @@
 #include "pseudoramiX.h"
 #include "extension.h"
 #include "nonsdk_extinit.h"
+#ifdef GLXEXT
 #include "glx_extinit.h"
+#endif
 #define _APPLEWM_SERVER_
 #include "applewmExt.h"
 

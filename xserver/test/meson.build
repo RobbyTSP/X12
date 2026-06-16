@@ -70,7 +70,7 @@ rendercheck_tests_gles2_success = rendercheck_blend_gles2 + rendercheck_tests_no
 rendercheck_tests_gles3 = rendercheck_blend_gles2 + rendercheck_tests_noblend + rendercheck_a8
 rendercheck = find_program('rendercheck', required:false)
 
-if get_option('xvfb')
+if build_xvfb
     xvfb_args = [
         xvfb_server.full_path(),
         '-screen',

@@ -41,9 +41,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "colormap.h"
 #include "micmap.h"
 #include "globals.h"
-#include "glxserver.h"
 #include "extinit.h"
+#ifdef GLXEXT
+#include "glxserver.h"
 #include "glx_extinit.h"
+#endif
 
 static MODULESETUPPROTO(glxSetup);
 

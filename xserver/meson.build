@@ -288,7 +288,9 @@ if build_xquartz
 endif
 
 build_xephyr = get_option('xephyr')
-build_xvfb = get_option('xvfb')
+build_xvfb = false
+build_xnest = false
+build_xwayland = false
 
 summary({
         'Xorg': build_xorg,
@@ -505,12 +507,9 @@ if not xdmcp_dep.found()
   has_xdm_auth = false
 endif
 
-build_glx = get_option('glx')
+build_glx = false
 libxserver_glx = []
 libglxvnd = []
-if build_glx
-    build_hashtable = true
-endif
 
 libdrm_dep = dependency('libdrm', version: libdrm_req, required: false)
 
@@ -724,7 +723,11 @@ if get_option('libunwind')
     common_dep += dependency('libunwind', required: true)
 endif
 
-glx_inc = include_directories('glx')
+if build_glx
+    glx_inc = include_directories('glx')
+else
+    glx_inc = include_directories('.')
+endif
 
 top_dir_inc = include_directories('.')
 

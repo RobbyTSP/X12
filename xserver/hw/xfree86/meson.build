@@ -134,9 +134,7 @@ endif
 if build_modesetting
    subdir('drivers/modesetting')
 endif
-if get_option('xf86-input-inputtest')
-    subdir('drivers/inputtest')
-endif
+
 
 meson.add_install_script(
     'sh', '-c',
