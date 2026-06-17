@@ -15,6 +15,12 @@ This project is **highly experimental** and a work in progress! Since it is an a
 * **C Code Volume:** 356,269 source lines of code
 * **Header Volume:** 60,951 header lines of code
 
+## Legacy Compatibility: XOTXN
+
+To keep the X12 codebase clean and modern, all backward-compatibility layers for legacy client protocols and old hardware devices have been split out into a separate, modular project.
+
+* **Coming Soon:** [XOTXN](https://github.com/RobbyTSP/XOTXN) (Xorg Old translate Xorg New) - An out-of-process translation bridge written in Rust and C.
+
 ## Author & Credits
 
 This project was developed entirely by **Robby** (sole creator/developer).
