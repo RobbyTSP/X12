@@ -10,10 +10,10 @@ This project is **highly experimental** and a work in progress! Since it is an a
 ## Codebase Size & Analysis (Reduction Metrics)
 
 🐾 **X12 Footprint Analysis:**
-* **Source Files (.c):** 1,035 files (reduced from ~1,850 in legacy X11)
-* **Header Files (.h):** 631 files (reduced from ~1,420 in legacy X11)
-* **C Code Volume:** 358,982 source lines of code
-* **Header Volume:** 116,394 header lines of code
+* **Source Files (.c):** 633 files (reduced from ~1,850 in legacy X11)
+* **Header Files (.h):** 377 files (reduced from ~1,420 in legacy X11)
+* **C Code Volume:** 356,269 source lines of code
+* **Header Volume:** 60,951 header lines of code
 
 ## Author & Credits
 

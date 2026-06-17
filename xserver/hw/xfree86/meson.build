@@ -117,20 +117,10 @@ xorg_server = executable(
 # subdirs for modules loadable by Xorg
 subdir('dixmods')
 subdir('exa')
-subdir('fbdevhw')
 if gbm_dep.found()
     subdir('glamor_egl')
 endif
-if int10 != 'false'
-    if int10 == 'x86emu'
-        subdir('x86emu')
-    endif
-    subdir('int10')
-endif
 subdir('shadowfb')
-if build_vgahw
-    subdir('vgahw')
-endif
 if build_modesetting
    subdir('drivers/modesetting')
 endif

@@ -323,16 +323,7 @@ if build_ipv6 and not have_AF_INET6
 endif
 message('IPv6 support: ' + (build_ipv6 ? 'YES' : 'NO'))
 
-int10 = get_option('int10')
-if int10 == 'auto'
-    int10 = 'x86emu'
-    if host_machine.cpu() == 'ppc' and host_machine.system() == 'freebsd'
-        int10 = 'stub'
-    endif
-    if host_machine.cpu() == 'arm'
-        int10 = 'stub'
-    endif
-endif
+int10 = 'false'
 
 hal_dep = []
 if hal_option == 'auto'
@@ -554,15 +545,6 @@ endif
 build_modesetting = libdrm_dep.found() and dri2proto_dep.found()
 
 build_vgahw = false
-if get_option('vgahw') == 'auto'
-    if (host_machine.system() != 'darwin' and
-        host_machine.system() != 'windows' and
-        host_machine.system() != 'cygwin')
-        build_vgahw = true
-    endif
-else
-    build_vgahw = get_option('vgahw') == 'true'
-endif
 
 build_dpms = get_option('dpms')
 if build_xquartz
@@ -570,7 +552,7 @@ if build_xquartz
 endif
 
 build_xf86bigfont = get_option('xf86bigfont')
-build_screensaver = get_option('screensaver')
+build_screensaver = false
 build_res = get_option('xres')
 if build_res
     build_hashtable = true
@@ -594,15 +576,6 @@ endif
 
 build_dga = false
 xf86dgaproto_dep = dependency('', required: false)
-if get_option('dga') == 'auto'
-    xf86dgaproto_dep = dependency('xf86dgaproto', version: xf86dgaproto_req, required: false)
-    if xf86dgaproto_dep.found()
-        build_dga = true
-    endif
-elif get_option('dga') == 'true'
-    xf86dgaproto_dep = dependency('xf86dgaproto', version: xf86dgaproto_req, required: true)
-    build_dga = true
-endif
 
 build_apm = false
 if (get_option('linux_apm') == true and

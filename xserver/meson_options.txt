@@ -60,9 +60,6 @@ option('listen_unix', type: 'boolean', value: true,
 option('listen_local', type: 'boolean', value: true,
        description: 'Listen on local by default')
 
-option('int10', type: 'combo', choices: ['stub', 'x86emu', 'vm86', 'auto', 'false'],
-       value: 'auto',
-       description: 'Xorg int10 backend (default: usually x86emu)')
 option('suid_wrapper', type: 'boolean', value: false,
        description: 'SUID wrapper for legacy driver support')
 option('pciaccess', type: 'boolean', value: true,
@@ -75,14 +72,10 @@ option('systemd_notify', type: 'combo', choices: ['true', 'false', 'auto'], valu
        description: 'Enable systemd-notify support')
 option('systemd_logind', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
        description: 'Enable systemd-logind integration')
-option('vgahw', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
-       description: 'Xorg VGA access module')
 option('dpms', type: 'boolean', value: true,
        description: 'Xorg DPMS extension')
 option('xf86bigfont', type: 'boolean', value: false,
        description: 'XF86 Big Font extension')
-option('screensaver', type: 'boolean', value: true,
-       description: 'ScreenSaver extension')
 option('xres', type: 'boolean', value: true,
        description: 'XRes extension')
 option('xace', type: 'boolean', value: true,
@@ -97,8 +90,7 @@ option('xv', type: 'boolean', value: true,
        description: 'Xv extension')
 option('xvmc', type: 'boolean', value: true,
        description: 'XvMC extension')
-option('dga', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
-       description: 'DGA extension')
+
 option('linux_apm', type: 'boolean', value: true,
        description: 'APM support on Linux')
 option('linux_acpi', type: 'boolean', value: true,
