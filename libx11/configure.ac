@@ -269,7 +269,7 @@ AC_SUBST(KEYSYMDEFS)
 AC_ARG_ENABLE(xcms,
               AS_HELP_STRING([--disable-xcms],
                 [Disable Xlib support for CMS *EXPERIMENTAL*]),
-              [XCMS=$enableval],[XCMS=yes])
+              [XCMS=$enableval],[XCMS=no])
 AM_CONDITIONAL(XCMS, [test x$XCMS = xyes ])
 if test x"$XCMS" = "xyes"; then
 	AC_DEFINE(XCMS,1,[Include support for XCMS])
@@ -278,7 +278,7 @@ fi
 AC_ARG_ENABLE(xlocale,
               AS_HELP_STRING([--disable-xlocale],
                 [Disable Xlib locale implementation *EXPERIMENTAL*]),
-              [XLOCALE=$enableval],[XLOCALE=yes])
+              [XLOCALE=$enableval],[XLOCALE=no])
 
 AM_CONDITIONAL(XLOCALE, [ test x$XLOCALE = xyes ])
 if test x"$XLOCALE" = "xyes"; then
@@ -301,7 +301,7 @@ AC_MSG_RESULT($ENABLE_XLOCALEDIR)
 AC_ARG_ENABLE(xf86bigfont,
 	      AS_HELP_STRING([--disable-xf86bigfont],
 		[Disable XF86BigFont extension support]),
-	      [XF86BIGFONT=$enableval],[XF86BIGFONT="yes"])
+	      [XF86BIGFONT=$enableval],[XF86BIGFONT="no"])
 if test "x$XF86BIGFONT" = "xyes"; then
     PKG_CHECK_MODULES(BIGFONT, [xf86bigfontproto >= 1.2.0],
          AC_DEFINE(XF86BIGFONT,1,[Enable XF86BIGFONT extension]),XF86BIGFONT="no")

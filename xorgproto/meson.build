@@ -24,17 +24,14 @@ project('xorgproto', 'c', license : 'MIT', version : '2025.1',
 cc = meson.get_compiler('c')
 
 pcs = [
-        'applewmproto',
         'bigreqsproto',
         'compositeproto',
         'damageproto',
-        'dmxproto',
         'dpmsproto',
         'dri2proto',
         'dri3proto',
         'fixesproto',
         'fontsproto',
-        'glproto',
         'inputproto',
         'kbproto',
         'presentproto',
@@ -46,13 +43,8 @@ pcs = [
         'videoproto',
         'xcmiscproto',
         'xextproto',
-        'xf86bigfontproto',
-        'xf86dgaproto',
-        'xf86driproto',
-        'xf86vidmodeproto',
         'xineramaproto',
         'xproto',
-        'xwaylandproto',
 ]
 
 pc_data = configuration_data()
