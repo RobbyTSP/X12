@@ -50,9 +50,7 @@ if conf_data.get('BUSFAULT').to_int() != 0
     srcs_os += 'busfault.c'
 endif
 
-if get_option('xdmcp')
-    srcs_os += 'xdmcp.c'
-endif
+# XDMCP is disabled in X12
 
 os_dep = []
 os_c_args = []

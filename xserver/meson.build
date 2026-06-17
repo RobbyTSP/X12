@@ -264,28 +264,8 @@ if get_option('xnest') == 'auto'
 endif
 
 build_xwin = false
-if get_option('xwin') == 'auto'
-    if (host_machine.system() == 'cygwin' or
-        host_machine.system() == 'windows')
-            build_xwin = true
-    endif
-else
-    build_xwin = get_option('xwin') == 'true'
-endif
-
 build_xquartz = false
-if get_option('xquartz') == 'auto'
-    if host_machine.system() == 'darwin'
-            build_xquartz = true
-    endif
-else
-    build_xquartz = get_option('xquartz') == 'true'
-endif
-
 build_rootless = false
-if build_xquartz
-    build_rootless = true
-endif
 
 build_xephyr = get_option('xephyr')
 build_xvfb = false
@@ -488,15 +468,7 @@ else
 endif
 
 xdmcp_dep = dependency('', required : false)
-if get_option('xdmcp')
-    xdmcp_dep = dependency('xdmcp')
-endif
-
-has_xdm_auth = get_option('xdm-auth-1')
-
-if not xdmcp_dep.found()
-  has_xdm_auth = false
-endif
+has_xdm_auth = false
 
 build_glx = false
 libxserver_glx = []

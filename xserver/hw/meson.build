@@ -14,14 +14,6 @@ if build_xorg
     subdir('xfree86')
 endif
 
-if build_xquartz
-    subdir('xquartz')
-endif
-
 if build_xwayland
     subdir('xwayland')
-endif
-
-if build_xwin
-    subdir('xwin')
 endif

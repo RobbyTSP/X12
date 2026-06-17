@@ -3,14 +3,12 @@ xorg_inc = include_directories(
     'ddc',
     'dri2',
     'i2c',
-    'int10',
     'loader',
     'modes',
     'os-support',
     'os-support/bus',
     'parser',
     'ramdac',
-    'vgahw',
 )
 
 xorg_c_args = []

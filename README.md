@@ -10,10 +10,10 @@ This project is **highly experimental** and a work in progress! Since it is an a
 ## Codebase Size & Analysis (Reduction Metrics)
 
 🐾 **X12 Footprint Analysis:**
-* **Source Files (.c):** 633 files (reduced from ~1,850 in legacy X11)
-* **Header Files (.h):** 377 files (reduced from ~1,420 in legacy X11)
-* **C Code Volume:** 356,269 source lines of code
-* **Header Volume:** 60,951 header lines of code
+* **Source Files (.c):** 548 files (reduced from ~1,850 in legacy X11)
+* **Header Files (.h):** 320 files (reduced from ~1,420 in legacy X11)
+* **C Code Volume:** 317,170 source lines of code
+* **Header Volume:** 51,802 header lines of code
 
 ## Legacy Compatibility: XOTXN
 
@@ -53,9 +53,13 @@ The following directories and modules were physically deleted or disabled in the
 * **Xwayland:** Completely removed (`-Dxwayland=false`) and source directory deleted.
 * **Nested X Servers:** `Xnest`, `Xvfb`, and `Xephyr` directories have been physically deleted.
 * **Input Test Driver:** `inputtest` driver disabled and deleted.
+* **Platform-Specific Ports:** `xquartz` (macOS) and `xwin` (Windows) directories have been physically deleted, and their build options removed.
 
 ### 6. Network TCP/IPv6 Connections
 To prevent remote exploits, network TCP listeners are completely disabled (`TCPCONN` and `IPv6` compiled out). The server now communicates exclusively via secure, local Unix domain sockets.
+
+### 7. Remote Login & Network Protocols (XDMCP / XDM-AUTH-1)
+All support for remote logins via the X Display Manager Control Protocol (XDMCP) and XDM-AUTH-1 authentication has been completely stripped. No remote authentication modules or network handlers are compiled, restricting X12 purely to secure local access.
 
 ## License
 

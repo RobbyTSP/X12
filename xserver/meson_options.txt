@@ -12,12 +12,6 @@ option('xnest', type: 'combo', choices: ['true', 'false', 'auto'], value: 'false
        description: 'Enable Xnest nested X server')
 option('xvfb', type: 'boolean', value: false,
        description: 'Enable Xvfb X server')
-option('xwin', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
-       description: 'Enable XWin X server')
-option('xquartz', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
-       description: 'Enable Xquartz X server')
-
-
 option('builder_addr', type: 'string', description: 'Builder address', value: 'xorg@lists.freedesktop.org')
 option('builder_string', type: 'string', description: 'Additional builder string')
 
@@ -30,8 +24,6 @@ option('fontrootdir', type: 'string',
 option('serverconfigdir', type: 'string',
         description: 'Miscellaneous server configuration files path. Default: $libdir/xorg')
 
-option('xdmcp', type: 'boolean', value: true)
-option('xdm-auth-1', type: 'boolean', value: true)
 option('ipv6', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto')
 option('input_thread', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto')
 
