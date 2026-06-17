@@ -9,11 +9,21 @@ This project is **highly experimental** and a work in progress! Since it is an a
 
 ## Codebase Size & Analysis (Reduction Metrics)
 
-🐾 **X12 Footprint Analysis:**
+🐾 **X12 Server Footprint (xserver):**
 * **Source Files (.c):** 548 files (reduced from ~1,850 in legacy X11)
 * **Header Files (.h):** 320 files (reduced from ~1,420 in legacy X11)
 * **C Code Volume:** 317,170 source lines of code
 * **Header Volume:** 51,802 header lines of code
+
+🐾 **X12 Client Library (libX11):**
+* **Source Files (.c):** 415 files
+* **Header Files (.h):** 90 files
+* **C Code Volume:** 107,518 source lines of code
+* **Header Volume:** 49,710 header lines of code
+
+🐾 **X12 Protocols (xorgproto):**
+* **Header Files (.h):** 156 files
+* **Header Volume:** 42,377 header lines of code
 
 ## Legacy Compatibility: XOTXN
 
@@ -60,6 +70,13 @@ To prevent remote exploits, network TCP listeners are completely disabled (`TCPC
 
 ### 7. Remote Login & Network Protocols (XDMCP / XDM-AUTH-1)
 All support for remote logins via the X Display Manager Control Protocol (XDMCP) and XDM-AUTH-1 authentication has been completely stripped. No remote authentication modules or network handlers are compiled, restricting X12 purely to secure local access.
+
+### 8. Client-Side & Protocol De-bloating (Phase 3)
+* **xorgproto:** Completely stripped pkg-config and header configurations for obsolete extension protocols, including `applewmproto`, `dmxproto`, `glproto`, `xf86bigfontproto`, `xf86dgaproto`, `xf86driproto`, `xf86vidmodeproto`, and `xwaylandproto`.
+* **libX11:** Disabled legacy subsystems client-side by defaulting their compile options to disabled:
+  * **XCMS** (Color Management System)
+  * **XLOCALE** (Legacy input method / local internationalization)
+  * **XF86BigFont** (Legacy font scaling extension helper)
 
 ## License
 
