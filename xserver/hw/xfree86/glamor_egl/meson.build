@@ -1,8 +1,11 @@
 glamoregl_src = [
     '../../../glamor/glamor_egl.c',
     '../../../glamor/glamor_eglmodule.c',
-    'glamor_xf86_xv.c',
 ]
+
+if build_xv
+    glamoregl_src += 'glamor_xf86_xv.c'
+endif
 
 shared_module(
     'glamoregl',

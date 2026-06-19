@@ -66,22 +66,12 @@ option('systemd_logind', type: 'combo', choices: ['true', 'false', 'auto'], valu
        description: 'Enable systemd-logind integration')
 option('dpms', type: 'boolean', value: true,
        description: 'Xorg DPMS extension')
-option('xf86bigfont', type: 'boolean', value: false,
-       description: 'XF86 Big Font extension')
 option('xres', type: 'boolean', value: true,
        description: 'XRes extension')
 option('xace', type: 'boolean', value: true,
        description: 'X-ACE extension')
-option('xselinux', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
-       description: 'XSELINUX extension')
 option('xinerama', type: 'boolean', value: true,
        description: 'Xinerama extension')
-option('xcsecurity', type: 'boolean', value: false,
-       description: 'Security extension')
-option('xv', type: 'boolean', value: true,
-       description: 'Xv extension')
-option('xvmc', type: 'boolean', value: true,
-       description: 'XvMC extension')
 
 option('linux_apm', type: 'boolean', value: true,
        description: 'APM support on Linux')

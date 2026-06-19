@@ -32,7 +32,9 @@
 #include <X11/Xfuncproto.h>
 
 #include "glamor.h"
+#ifdef XV
 #include "xvdix.h"
+#endif
 
 #if XSYNC
 #include "misyncshm.h"
@@ -929,6 +931,7 @@ glamor_solid_boxes(DrawablePtr drawable,
                    BoxPtr box, int nbox, unsigned long fg_pixel);
 
 
+#ifdef XV
 /* glamor_xv */
 typedef struct {
     uint32_t transform_index;
@@ -981,6 +984,7 @@ int glamor_xv_put_image(glamor_port_private *port_priv,
                         RegionPtr clipBoxes);
 void glamor_xv_core_init(ScreenPtr screen);
 void glamor_xv_render(glamor_port_private *port_priv, int id);
+#endif
 
 #include "glamor_utils.h"
 

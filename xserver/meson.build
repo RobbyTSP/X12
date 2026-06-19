@@ -96,7 +96,7 @@ xf86driproto_dep = dependency('xf86driproto', version: '>= 2.1.0', fallback: ['x
 dri2proto_dep = dependency('dri2proto', version: '>= 2.8', fallback: ['xorgproto', 'ext_xorgproto'], required: get_option('dri2') == 'true')
 dri3proto_dep = dependency('dri3proto', version: '>= 1.4', fallback: ['xorgproto', 'ext_xorgproto'], required: get_option('dri3') == 'true')
 xineramaproto_dep = dependency('xineramaproto', fallback: ['xorgproto', 'ext_xorgproto'])
-xf86bigfontproto_dep = dependency('xf86bigfontproto', version: '>= 1.2.0', fallback: ['xorgproto', 'ext_xorgproto'], required: get_option('xf86bigfont'))
+xf86bigfontproto_dep = dependency('xf86bigfontproto', version: '>= 1.2.0', fallback: ['xorgproto', 'ext_xorgproto'], required: false)
 xf86vidmodeproto_dep = dependency('xf86vidmodeproto', version: '>= 2.2.99.1', fallback: ['xorgproto', 'ext_xorgproto'])
 applewmproto_dep = dependency('applewmproto', version: '>= 1.4', fallback: ['xorgproto', 'ext_xorgproto'], required: false)
 xshmfence_dep = dependency('xshmfence', version: xshmfence_req, required: false)
@@ -523,7 +523,7 @@ if build_xquartz
     build_dpms = false
 endif
 
-build_xf86bigfont = get_option('xf86bigfont')
+build_xf86bigfont = false
 build_screensaver = false
 build_res = get_option('xres')
 if build_res
@@ -533,18 +533,9 @@ endif
 build_xace = get_option('xace')
 build_xinerama = get_option('xinerama')
 
-build_xsecurity = get_option('xcsecurity')
-if build_xsecurity
-    if not build_xace
-        error('cannot build Security extension without X-ACE')
-    endif
-endif
-
-build_xv = get_option('xv')
-build_xvmc = get_option('xvmc')
-if not build_xv
-    build_xvmc = false
-endif
+build_xsecurity = false
+build_xv = false
+build_xvmc = false
 
 build_dga = false
 xf86dgaproto_dep = dependency('', required: false)
@@ -638,24 +629,6 @@ inc = include_directories(
 )
 
 build_xselinux = false
-if get_option('xselinux') != 'false'
-    dep_selinux = dependency('libselinux', version: libselinux_req,
-			     required: get_option('xselinux') == 'true')
-    dep_audit = dependency('audit', required: get_option('xselinux') == 'true')
-    if get_option('xselinux') == 'true'
-        build_xselinux = true
-    else
-        build_xselinux = dep_selinux.found() and dep_audit.found() and build_xace
-    endif
-
-    if build_xselinux
-        common_dep += dep_selinux
-        common_dep += dep_audit
-    endif
-endif
-if build_xselinux and not build_xace
-    error('cannot build SELinux extension without X-ACE')
-endif
 
 
 socket_dep = []

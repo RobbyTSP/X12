@@ -1160,25 +1160,7 @@ xf86LogInit(void)
 
     /* Get the log file name */
     if (xf86LogFileFrom == X_DEFAULT) {
-        /* When not running as root, we won't be able to write to /var/log */
-        if (geteuid() != 0) {
-            if ((env = getenv("XDG_STATE_HOME")))
-                snprintf(buf, sizeof(buf), "%s/%s", env,
-                         DEFAULT_XDG_STATE_HOME_LOGDIR);
-            else if ((env = getenv("HOME")))
-                snprintf(buf, sizeof(buf), "%s/%s/%s", env,
-                         DEFAULT_XDG_STATE_HOME, DEFAULT_XDG_STATE_HOME_LOGDIR);
-
-            if (env) {
-                xf86_mkdir_p(buf);
-                strlcat(buf, "/" DEFAULT_LOGPREFIX, sizeof(buf));
-                xf86LogFile = buf;
-            }
-        }
-        /* Append the display number and ".log" */
-        if (asprintf(&lf, "%s%%s" LOGSUFFIX, xf86LogFile) == -1)
-            FatalError("Cannot allocate space for the log file name\n");
-        xf86LogFile = lf;
+        xf86LogFile = NULL;
     }
 
     xf86LogFile = LogInit(xf86LogFile, LOGOLDSUFFIX);

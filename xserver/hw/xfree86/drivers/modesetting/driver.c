@@ -2153,15 +2153,14 @@ ScreenInit(ScreenPtr pScreen, int argc, char **argv)
 
 #ifdef GLAMOR_HAS_GBM
     if (ms->drmmode.glamor) {
-        XF86VideoAdaptorPtr     glamor_adaptor;
+        XF86VideoAdaptorPtr     glamor_adaptor = NULL;
 
-        glamor_adaptor = ms->glamor.xv_init(pScreen, 16);
+        if (ms->glamor.xv_init) {
+            glamor_adaptor = ms->glamor.xv_init(pScreen, 16);
+        }
         if (glamor_adaptor != NULL) {
             /* xf86XVScreenInit(pScreen, &glamor_adaptor, 1); */
         }
-        else
-            xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
-                       "Failed to initialize XV support.\n");
     }
 #endif
 

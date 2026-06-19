@@ -10,10 +10,10 @@ This project is **highly experimental** and a work in progress! Since it is an a
 ## Codebase Size & Analysis (Reduction Metrics)
 
 🐾 **X12 Server Footprint (xserver):**
-* **Source Files (.c):** 548 files (reduced from ~1,850 in legacy X11)
-* **Header Files (.h):** 320 files (reduced from ~1,420 in legacy X11)
-* **C Code Volume:** 317,170 source lines of code
-* **Header Volume:** 51,802 header lines of code
+* **Source Files (.c):** 534 files (reduced from ~1,850 in legacy X11)
+* **Header Files (.h):** 307 files (reduced from ~1,420 in legacy X11)
+* **C Code Volume:** 304,591 source lines of code
+* **Header Volume:** 50,142 header lines of code
 
 🐾 **X12 Client Library (libX11):**
 * **Source Files (.c):** 415 files
@@ -54,10 +54,7 @@ Historically, the X-server loaded and rendered raster/vector fonts. Today, fonts
 Hardware colormaps (used for 8-bit / indexed color displays) are obsolete. TrueColor (24-bit/32-bit) is now standard. All old palette allocation calls are blocked:
 * `AllocColor`, `FreeColors`, `StoreColors`, etc.
 
-### 4. XVideo Extension (Xv / Video Scaling)
-obsolete hardware-overlay video scaling has been disabled. The server configuration disables Xv (`-Dxv=false`), and we have commented out the `xf86XVScreenInit` calls inside the `modesetting` driver to prevent runtime loading crashes.
-
-### 5. Bloated Subsystems & Nested Servers
+### 4. Bloated Subsystems & Nested Servers
 The following directories and modules were physically deleted or disabled in the build configuration:
 * **GLX:** Disabled (`-Dglx=false`) and the source directory deleted.
 * **Xwayland:** Completely removed (`-Dxwayland=false`) and source directory deleted.
@@ -65,18 +62,28 @@ The following directories and modules were physically deleted or disabled in the
 * **Input Test Driver:** `inputtest` driver disabled and deleted.
 * **Platform-Specific Ports:** `xquartz` (macOS) and `xwin` (Windows) directories have been physically deleted, and their build options removed.
 
-### 6. Network TCP/IPv6 Connections
+### 5. Network TCP/IPv6 Connections
 To prevent remote exploits, network TCP listeners are completely disabled (`TCPCONN` and `IPv6` compiled out). The server now communicates exclusively via secure, local Unix domain sockets.
 
-### 7. Remote Login & Network Protocols (XDMCP / XDM-AUTH-1)
+### 6. Remote Login & Network Protocols (XDMCP / XDM-AUTH-1)
 All support for remote logins via the X Display Manager Control Protocol (XDMCP) and XDM-AUTH-1 authentication has been completely stripped. No remote authentication modules or network handlers are compiled, restricting X12 purely to secure local access.
 
-### 8. Client-Side & Protocol De-bloating (Phase 3)
+### 7. Client-Side & Protocol De-bloating (Phase 3)
 * **xorgproto:** Completely stripped pkg-config and header configurations for obsolete extension protocols, including `applewmproto`, `dmxproto`, `glproto`, `xf86bigfontproto`, `xf86dgaproto`, `xf86driproto`, `xf86vidmodeproto`, and `xwaylandproto`.
 * **libX11:** Disabled legacy subsystems client-side by defaulting their compile options to disabled:
   * **XCMS** (Color Management System)
   * **XLOCALE** (Legacy input method / local internationalization)
   * **XF86BigFont** (Legacy font scaling extension helper)
+
+### 8. Extension Purging & Logging Modernization (Phase 4)
+* **Extension Purge:** Completely removed the following obsolete/insecure extensions:
+  * `MIT-SCREEN-SAVER` (Legacy screen saver protocol)
+  * `XSecurity` / `XSELINUX` (Insecure legacy server-side access control models)
+  * `XVideo` / `XvMC` (Obsolete hardware video overlays and motion compensation)
+  * `XF86BigFont` (Obsolete huge font scaling protocol)
+  * `XF86VidMode` (Obsolete display mode manipulation)
+* **Logging Modernization:** Configured the X server to log directly to `stderr` by default instead of writing files to `/var/log/` or creating runtime log files.
+* **Dependency Auditing:** Audited and verified that legacy Xmu/Xaw dependencies are fully pruned/stubbed and not linked.
 
 ## License
 
