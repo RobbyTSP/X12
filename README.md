@@ -91,6 +91,26 @@ All support for remote logins via the X Display Manager Control Protocol (XDMCP)
 * **libX11 Subsystem Purge:** Physically deleted obsolete and disabled subsystems in client libraries, removing `xcms/`, `xlibi18n/`, `modules/`, `nls/`, and `specs/` directories from `libx11/`.
 * **Meson Build Port:** Replaced the entire legacy Autotools build system of `libx11` with a modern, fast Meson build configuration, physically deleting all old Makefile.am/in, configure.ac, and build helper scripts.
 
+## Simplified Configuration File (`x12.conf`)
+
+X12 introduces a simple, human-readable configuration file format to manage display features directly (such as V-Sync, TearFree, and Variable Refresh Rate / G-Sync / FreeSync), avoiding the need for bloated legacy `xorg.conf` files.
+
+The server loads configuration from `~/.config/x12.conf` (user-specific) with a fallback to `/etc/x12.conf` (system-wide). It also supports specifying a custom config path via the `X12_CONFIG_PATH` environment variable (useful for testing).
+
+Example `x12.conf`:
+```ini
+# Enable or disable display synchronization and features
+VSync = True             # Maps to modesetting PageFlip
+TearFree = True          # Double-buffered synchronization
+GSync = True             # Maps to modesetting VariableRefresh (VRR)
+DoubleShadow = True
+AccelMethod = glamor     # Acceleration backend
+```
+
+Supported Option Aliases:
+* `VSync` -> `PageFlip`
+* `GSync` / `FreeSync` / `VRR` -> `VariableRefresh`
+
 ## License
 
 This project is licensed under the **GNU Affero General Public License v3 (AGPLv3)**. See the `LICENSE` file for the full license text.

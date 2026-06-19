@@ -65,6 +65,7 @@
 #include <pciaccess.h>
 #endif
 #include "driver.h"
+#include "x12conf.h"
 
 static void AdjustFrame(ScrnInfoPtr pScrn, int x, int y);
 static Bool CloseScreen(ScreenPtr pScreen);
@@ -1355,6 +1356,7 @@ PreInit(ScrnInfoPtr pScrn, int flags)
         return FALSE;
     memcpy(ms->drmmode.Options, Options, sizeof(Options));
     xf86ProcessOptions(pScrn->scrnIndex, pScrn->options, ms->drmmode.Options);
+    ms_parse_x12_config(pScrn->scrnIndex, ms->drmmode.Options);
 
     if (!xf86SetWeight(pScrn, defaultWeight, defaultWeight))
         return FALSE;

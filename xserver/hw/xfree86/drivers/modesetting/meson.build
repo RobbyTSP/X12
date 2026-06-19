@@ -6,6 +6,7 @@ modesetting_srcs = [
     'pageflip.c',
     'present.c',
     'vblank.c',
+    'x12conf.c',
 ]
 
 shared_module(
