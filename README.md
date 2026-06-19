@@ -10,16 +10,16 @@ This project is **highly experimental** and a work in progress! Since it is an a
 ## Codebase Size & Analysis (Reduction Metrics)
 
 🐾 **X12 Server Footprint (xserver):**
-* **Source Files (.c):** 534 files (reduced from ~1,850 in legacy X11)
-* **Header Files (.h):** 307 files (reduced from ~1,420 in legacy X11)
-* **C Code Volume:** 304,591 source lines of code
-* **Header Volume:** 50,142 header lines of code
+* **Source Files (.c):** 513 files (reduced from ~1,850 in legacy X11)
+* **Header Files (.h):** 305 files (reduced from ~1,420 in legacy X11)
+* **C Code Volume:** 300,979 source lines of code
+* **Header Volume:** 50,031 header lines of code
 
 🐾 **X12 Client Library (libX11):**
-* **Source Files (.c):** 415 files
-* **Header Files (.h):** 90 files
-* **C Code Volume:** 107,518 source lines of code
-* **Header Volume:** 49,710 header lines of code
+* **Source Files (.c):** 370 files
+* **Header Files (.h):** 89 files
+* **C Code Volume:** 79,795 source lines of code
+* **Header Volume:** 49,379 header lines of code
 
 🐾 **X12 Protocols (xorgproto):**
 * **Header Files (.h):** 156 files
@@ -84,6 +84,12 @@ All support for remote logins via the X Display Manager Control Protocol (XDMCP)
   * `XF86VidMode` (Obsolete display mode manipulation)
 * **Logging Modernization:** Configured the X server to log directly to `stderr` by default instead of writing files to `/var/log/` or creating runtime log files.
 * **Dependency Auditing:** Audited and verified that legacy Xmu/Xaw dependencies are fully pruned/stubbed and not linked.
+
+### 9. OS Support Consolidation, Acceleration Pruning, and Physical Subsystem Purge (Phase 5)
+* **OS-Support Consolidation (Linux-Only):** Consolidated OS support in `xserver` to Linux-only, completely purging BSD (`bsd/`), Solaris (`solaris/`), and stub (`stub/`) directories.
+* **Acceleration Pruning:** Pruned legacy DDX acceleration architectures from `xfree86` DDX, physically deleting `exa/` and `shadowfb/` directories, making `glamor` / `modesetting` the sole driver acceleration system.
+* **libX11 Subsystem Purge:** Physically deleted obsolete and disabled subsystems in client libraries, removing `xcms/`, `xlibi18n/`, `modules/`, `nls/`, and `specs/` directories from `libx11/`.
+* **Meson Build Port:** Replaced the entire legacy Autotools build system of `libx11` with a modern, fast Meson build configuration, physically deleting all old Makefile.am/in, configure.ac, and build helper scripts.
 
 ## License
 

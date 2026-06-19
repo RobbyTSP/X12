@@ -113,11 +113,9 @@ xorg_server = executable(
 
 # subdirs for modules loadable by Xorg
 subdir('dixmods')
-subdir('exa')
 if gbm_dep.found()
     subdir('glamor_egl')
 endif
-subdir('shadowfb')
 if build_modesetting
    subdir('drivers/modesetting')
 endif
