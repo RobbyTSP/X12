@@ -351,6 +351,20 @@ if build_glamor
     epoxy_dep = dependency('epoxy', required: false)
 endif
 
+vulkan_option = get_option('vulkan')
+if vulkan_option == 'auto'
+    build_vulkan = build_xorg
+else
+    build_vulkan = vulkan_option == 'true'
+endif
+
+vulkan_dep = dependency('', required: false)
+if build_vulkan
+    vulkan_dep = dependency('vulkan', required: vulkan_option == 'true')
+    build_vulkan = vulkan_dep.found()
+endif
+
+
 if build_xwayland
     libdecor_dep = dependency('libdecor-0', required: false)
     libdecor_option = get_option('libdecor')
@@ -626,6 +640,7 @@ inc = include_directories(
     'randr',
     'render',
     'xfixes',
+    'x12vulkan',
 )
 
 build_xselinux = false
@@ -735,6 +750,9 @@ subdir('Xi')
 if build_glamor
     subdir('glamor')
 endif
+if build_vulkan
+    subdir('x12vulkan')
+endif
 if build_xorg or get_option('xephyr')
     subdir('exa')
 endif
@@ -763,6 +781,10 @@ libxserver = [
 ]
 
 libxserver += libxserver_dri3
+
+if build_vulkan
+    libxserver += libxserver_vulkan
+endif
 
 subdir('hw')
 
@@ -854,3 +876,16 @@ if build_docs or build_docs_devel
         configuration: docxmlconfig
     )
 endif
+
+# Integrate XOTXN cargo build into X12
+cargo = find_program('cargo', required: false)
+if cargo.found()
+    xotxn_dir = meson.project_source_root() / '../../XOTXN'
+    custom_target('xotxn',
+        build_by_default: true,
+        console: true,
+        command: ['sh', '-c', 'cargo build --manifest-path "$1" && touch "$2"', '_', xotxn_dir / 'Cargo.toml', '@OUTPUT@'],
+        output: 'xotxn-build'
+    )
+endif
+

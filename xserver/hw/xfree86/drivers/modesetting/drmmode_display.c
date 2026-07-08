@@ -56,6 +56,9 @@
 #include <X11/extensions/dpmsconst.h>
 
 #include "driver.h"
+#ifdef HAVE_VULKAN
+#include "x12vulkan.h"
+#endif
 
 #if X_BYTE_ORDER == X_BIG_ENDIAN
 #define cpu_to_le32(x) bswap_32(x)
@@ -1120,7 +1123,7 @@ drmmode_create_bo(drmmode_ptr drmmode, drmmode_bo *bo,
     bo->height = height;
 
 #ifdef GLAMOR_HAS_GBM
-    if (drmmode->glamor) {
+    if (drmmode->glamor || drmmode->vulkan) {
 #ifdef GBM_BO_WITH_MODIFIERS
         uint32_t num_modifiers;
         uint64_t *modifiers = NULL;
@@ -1589,6 +1592,17 @@ drmmode_copy_fb(ScrnInfoPtr pScrn, drmmode_ptr drmmode)
 void
 drmmode_copy_damage(xf86CrtcPtr crtc, PixmapPtr dst, RegionPtr dmg, Bool empty)
 {
+#ifdef HAVE_VULKAN
+    if (modesettingPTR(crtc->scrn)->drmmode.vulkan) {
+        ScreenPtr pScreen = xf86ScrnToScreen(crtc->scrn);
+        DrawableRec *src = crtc->rotatedPixmap ? &crtc->rotatedPixmap->drawable : &pScreen->GetScreenPixmap(pScreen)->drawable;
+        x12_vulkan_copy_damage(dst, (PixmapPtr)src, dmg, -crtc->x, -crtc->y);
+        if (empty)
+            RegionEmpty(dmg);
+        return;
+    }
+#endif
+
 #ifdef GLAMOR_HAS_GBM
     ScreenPtr pScreen = xf86ScrnToScreen(crtc->scrn);
     DrawableRec *src;
@@ -3619,6 +3633,16 @@ drmmode_clones_init(ScrnInfoPtr scrn, drmmode_ptr drmmode, drmModeResPtr mode_re
 static Bool
 drmmode_set_pixmap_bo(drmmode_ptr drmmode, PixmapPtr pixmap, drmmode_bo *bo)
 {
+#ifdef HAVE_VULKAN
+    if (drmmode->vulkan) {
+        if (!x12_vulkan_import_gbm_bo_to_pixmap(pixmap, bo->gbm)) {
+            xf86DrvMsg(drmmode->scrn->scrnIndex, X_ERROR, "Failed to import GBM BO to Pixmap in Vulkan\n");
+            return FALSE;
+        }
+        return TRUE;
+    }
+#endif
+
 #ifdef GLAMOR_HAS_GBM
     ScrnInfoPtr scrn = drmmode->scrn;
     modesettingPtr ms = modesettingPTR(scrn);
@@ -3713,6 +3737,15 @@ drmmode_xf86crtc_resize(ScrnInfoPtr scrn, int width, int height)
 
     if (!drmmode_glamor_handle_new_screen_pixmap(drmmode))
         goto fail;
+
+#ifdef HAVE_VULKAN
+    if (drmmode->vulkan) {
+        if (!x12_vulkan_import_gbm_bo(screen, drmmode->front_bo.gbm)) {
+            LogMessage(X_ERROR, "[X12 Vulkan] Failed to import resized front bo\n");
+            goto fail;
+        }
+    }
+#endif
 
     drmmode_clear_pixmap(ppix);
 
@@ -3948,8 +3981,8 @@ drmmode_pre_init(ScrnInfoPtr pScrn, drmmode_ptr drmmode, int cpp)
 Bool
 drmmode_init(ScrnInfoPtr pScrn, drmmode_ptr drmmode)
 {
-#ifdef GLAMOR_HAS_GBM
     ScreenPtr pScreen = xf86ScrnToScreen(pScrn);
+#ifdef GLAMOR_HAS_GBM
     modesettingPtr ms = modesettingPTR(pScrn);
 
     if (drmmode->glamor) {
@@ -3959,6 +3992,19 @@ drmmode_init(ScrnInfoPtr pScrn, drmmode_ptr drmmode)
 #ifdef GBM_BO_WITH_MODIFIERS
         ms->glamor.set_drawable_modifiers_func(pScreen, get_drawable_modifiers);
 #endif
+    }
+#endif
+
+#ifdef HAVE_VULKAN
+    if (drmmode->vulkan) {
+        if (!x12_vulkan_init(pScreen)) {
+            return FALSE;
+        }
+        if (drmmode->front_bo.gbm) {
+            if (!x12_vulkan_import_gbm_bo(pScreen, drmmode->front_bo.gbm)) {
+                return FALSE;
+            }
+        }
     }
 #endif
 

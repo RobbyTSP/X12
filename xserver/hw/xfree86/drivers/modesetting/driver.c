@@ -58,6 +58,9 @@
 #include "xf86xv.h"
 #include <X11/extensions/Xv.h>
 #include <xorg-config.h>
+#ifdef HAVE_VULKAN
+#include "x12vulkan.h"
+#endif
 #ifdef XSERVER_PLATFORM_BUS
 #include "xf86platformBus.h"
 #endif
@@ -1167,6 +1170,25 @@ try_enable_glamor(ScrnInfoPtr pScrn)
 #endif
 }
 
+#ifdef HAVE_VULKAN
+static void
+try_enable_vulkan(ScrnInfoPtr pScrn)
+{
+    modesettingPtr ms = modesettingPTR(pScrn);
+    const char *accel_method_str = xf86GetOptValString(ms->drmmode.Options,
+                                                       OPTION_ACCEL_METHOD);
+    Bool do_vulkan = (accel_method_str &&
+                      strcmp(accel_method_str, "vulkan") == 0);
+
+    ms->drmmode.vulkan = FALSE;
+
+    if (do_vulkan) {
+        xf86DrvMsg(pScrn->scrnIndex, X_INFO, "Vulkan acceleration enabled\n");
+        ms->drmmode.vulkan = TRUE;
+    }
+}
+#endif
+
 static Bool
 msShouldDoubleShadow(ScrnInfoPtr pScrn, modesettingPtr ms)
 {
@@ -1379,8 +1401,11 @@ PreInit(ScrnInfoPtr pScrn, int flags)
     }
 
     try_enable_glamor(pScrn);
+#ifdef HAVE_VULKAN
+    try_enable_vulkan(pScrn);
+#endif
 
-    if (!ms->drmmode.glamor) {
+    if (!ms->drmmode.glamor && !ms->drmmode.vulkan) {
         Bool prefer_shadow = TRUE;
 
         if (ms->drmmode.force_24_32) {
@@ -2015,6 +2040,15 @@ ScreenInit(ScreenPtr pScreen, int argc, char **argv)
     if (ms->drmmode.glamor)
         ms->drmmode.gbm = ms->glamor.egl_get_gbm_device(pScreen);
 #endif
+#ifdef HAVE_VULKAN
+    if (ms->drmmode.vulkan) {
+        ms->drmmode.gbm = gbm_create_device(ms->fd);
+        if (!ms->drmmode.gbm) {
+            xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Failed to create GBM device for Vulkan\n");
+            return FALSE;
+        }
+    }
+#endif
 
     /* HW dependent - FIXME */
     pScrn->displayWidth = pScrn->virtualX;
@@ -2320,6 +2354,16 @@ CloseScreen(ScreenPtr pScreen)
 #endif
 
     ms_vblank_close_screen(pScreen);
+
+#ifdef HAVE_VULKAN
+    if (ms->drmmode.vulkan) {
+        x12_vulkan_fini(pScreen);
+        if (ms->drmmode.gbm) {
+            gbm_device_destroy(ms->drmmode.gbm);
+            ms->drmmode.gbm = NULL;
+        }
+    }
+#endif
 
     if (ms->damage) {
         DamageUnregister(ms->damage);

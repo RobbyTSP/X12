@@ -6,6 +6,8 @@ option('xwayland', type: 'combo', choices: ['true', 'false', 'auto'], value: 'fa
        description: 'Enable Xwayland X server')
 option('glamor', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
        description: 'Enable glamor (default yes for Xorg/Xwayland builds)')
+option('vulkan', type: 'combo', choices: ['true', 'false', 'auto'], value: 'auto',
+       description: 'Enable Vulkan rendering backend')
 option('xwayland_ei', type: 'combo', choices: ['socket', 'portal', 'false', 'auto'],
        value: 'auto', description: 'Enable emulated input support on Xwayland')
 option('xnest', type: 'combo', choices: ['true', 'false', 'auto'], value: 'false',
