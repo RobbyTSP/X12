@@ -29,7 +29,7 @@ This project is **highly experimental** and a work in progress! Since it is an a
 
 To keep the X12 codebase clean and modern, all backward-compatibility layers for legacy client protocols and old hardware devices have been split out into a separate, modular project.
 
-* **Coming Soon:** [XOTXN](https://github.com/RobbyTSP/XOTXN) (Xorg Old translate Xorg New) - An out-of-process translation bridge written in Rust and C.
+* **Modular Compatibility:** [XOTXN](https://github.com/RobbyTSP/XOTXN) (Xorg Old translate Xorg New) - An out-of-process translation bridge written in Rust.
 
 ## Author & Credits
 
